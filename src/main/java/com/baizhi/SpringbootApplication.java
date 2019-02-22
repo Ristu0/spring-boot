@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("com.baizhi.dao")
 public class SpringbootApplication {
     public static void main(String[] args) {
+        System.out.println(1111);
         SpringApplication.run(SpringbootApplication.class,args);
     }
 }
