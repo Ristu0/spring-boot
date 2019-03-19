@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.agtop.p2p.dao.LoginDao">
+    <!-- Login的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_Login_Map" type="club.agtop.p2p.entity.Login">
+        <id column="id" property="id"/>
+        <result column="userid" property="userid"/>
+        <result column="ip" property="ip"/>
+        <result column="logintime" property="logintime"/>
+    </resultMap>
+
+    <!-- 数据库中表名为:p_login的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="p_login_Column">
+        p_login.id as id
+        ,p_login.userid as userid
+        ,p_login.ip as ip
+        ,p_login.logintime as logintime
+    </sql>
+
+    <!--获得类名为:Login对应的数据库表的数据总行数 -->
+    <select id="getLoginRowCount" resultType="java.lang.Long">
+        select count(id) from p_login
+    </select>
+    <!-- 获得类名为:Login对应数据库中表的数据集合 -->
+    <select id="selectLogin" resultMap="result_Login_Map">
+        select
+        <include refid="p_login_Column"/>
+        from p_login
+    </select>
+
+    <!-- 获得一个Login对象,以参数Login对象中不为空的属性作为条件进行查询-->
+    <select id="selectLoginByObj" parameterType="club.agtop.p2p.entity.Login" resultMap="result_Login_Map">
+        select
+        <include refid="p_login_Column"/>
+        from p_login
+        <where>
+            <if test="logintime != null ">and p_login.logintime = #{logintime}</if>
+            <if test="ip != null ">and p_login.ip = #{ip}</if>
+            <if test="userid != null ">and p_login.userid = #{userid}</if>
+            <if test="id != null ">and p_login.id = #{id}</if>
+        </where>
+    </select>
+
+    <!-- 通过Login的id获得对应数据库中表的数据对象-->
+    <select id="selectLoginById" parameterType="java.lang.Integer" resultMap="result_Login_Map">
+        select
+        <include refid="p_login_Column"/>
+        from p_login
+        where p_login.id = #{id}
+    </select>
+
+    <!-- 将Login插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertLogin" parameterType="club.agtop.p2p.entity.Login">
+        insert into p_login(id,userid,ip,logintime) 
+        values(#{id},#{userid},#{ip},#{logintime})
+    </insert>
+
+    <!-- 将Login中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyLogin" parameterType="club.agtop.p2p.entity.Login">
+        insert into p_login
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userid != null">userid,</if>
+            <if test="ip != null">ip,</if>
+            <if test="logintime != null">logintime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userid != null">#{userid},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="logintime != null">#{logintime},</if>
+        </trim>
+    </insert>
+
+    <!-- 通过Login的id将数据库表中对应的数据删除-->
+    <delete id="deleteLoginById" parameterType="java.lang.Integer">
+        delete from p_login
+        where id = #{id}
+    </delete>
+
+    <!-- 通过Login的id将Login的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updateLoginById" parameterType="club.agtop.p2p.entity.Login">
+        update p_login set
+            userid=#{userid}
+            ,ip=#{ip}
+            ,logintime=#{logintime}
+        where id=#{id}
+    </update>
+
+    <!-- 通过Login的id将Login中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyLoginById" parameterType="club.agtop.p2p.entity.Login">
+        update p_login
+        <set>
+            <if test="userid != null">
+                userid=#{userid},
+            </if>
+            <if test="ip != null">
+                ip=#{ip},
+            </if>
+            <if test="logintime != null">
+                logintime=#{logintime},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

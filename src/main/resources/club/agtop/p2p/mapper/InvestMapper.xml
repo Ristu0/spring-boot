@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.agtop.p2p.dao.InvestDao">
+    <!-- Invest的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_Invest_Map" type="club.agtop.p2p.entity.Invest">
+        <id column="id" property="id"/>
+        <result column="projectid" property="projectid"/>
+        <result column="userid" property="userid"/>
+        <result column="money" property="money"/>
+        <result column="investtime" property="investtime"/>
+        <result column="paytime" property="paytime"/>
+        <result column="note" property="note"/>
+    </resultMap>
+
+    <!-- 数据库中表名为:p_invest的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="p_invest_Column">
+        p_invest.id as id
+        ,p_invest.projectid as projectid
+        ,p_invest.userid as userid
+        ,p_invest.money as money
+        ,p_invest.investtime as investtime
+        ,p_invest.paytime as paytime
+        ,p_invest.note as note
+    </sql>
+
+    <!--获得类名为:Invest对应的数据库表的数据总行数 -->
+    <select id="getInvestRowCount" resultType="java.lang.Long">
+        select count(id) from p_invest
+    </select>
+    <!-- 获得类名为:Invest对应数据库中表的数据集合 -->
+    <select id="selectInvest" resultMap="result_Invest_Map">
+        select
+        <include refid="p_invest_Column"/>
+        from p_invest
+    </select>
+
+    <!-- 获得一个Invest对象,以参数Invest对象中不为空的属性作为条件进行查询-->
+    <select id="selectInvestByObj" parameterType="club.agtop.p2p.entity.Invest" resultMap="result_Invest_Map">
+        select
+        <include refid="p_invest_Column"/>
+        from p_invest
+        <where>
+            <if test="note != null ">and p_invest.note = #{note}</if>
+            <if test="paytime != null ">and p_invest.paytime = #{paytime}</if>
+            <if test="investtime != null ">and p_invest.investtime = #{investtime}</if>
+            <if test="money != null ">and p_invest.money = #{money}</if>
+            <if test="userid != null ">and p_invest.userid = #{userid}</if>
+            <if test="projectid != null ">and p_invest.projectid = #{projectid}</if>
+            <if test="id != null ">and p_invest.id = #{id}</if>
+        </where>
+    </select>
+
+    <!-- 通过Invest的id获得对应数据库中表的数据对象-->
+    <select id="selectInvestById" parameterType="java.lang.Integer" resultMap="result_Invest_Map">
+        select
+        <include refid="p_invest_Column"/>
+        from p_invest
+        where p_invest.id = #{id}
+    </select>
+
+    <!-- 将Invest插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertInvest" parameterType="club.agtop.p2p.entity.Invest">
+        insert into p_invest(id,projectid,userid,money,investtime,paytime,note) 
+        values(#{id},#{projectid},#{userid},#{money},#{investtime},#{paytime},#{note})
+    </insert>
+
+    <!-- 将Invest中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyInvest" parameterType="club.agtop.p2p.entity.Invest">
+        insert into p_invest
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="projectid != null">projectid,</if>
+            <if test="userid != null">userid,</if>
+            <if test="money != null">money,</if>
+            <if test="investtime != null">investtime,</if>
+            <if test="paytime != null">paytime,</if>
+            <if test="note != null">note,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="projectid != null">#{projectid},</if>
+            <if test="userid != null">#{userid},</if>
+            <if test="money != null">#{money},</if>
+            <if test="investtime != null">#{investtime},</if>
+            <if test="paytime != null">#{paytime},</if>
+            <if test="note != null">#{note},</if>
+        </trim>
+    </insert>
+
+    <!-- 通过Invest的id将数据库表中对应的数据删除-->
+    <delete id="deleteInvestById" parameterType="java.lang.Integer">
+        delete from p_invest
+        where id = #{id}
+    </delete>
+
+    <!-- 通过Invest的id将Invest的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updateInvestById" parameterType="club.agtop.p2p.entity.Invest">
+        update p_invest set
+            projectid=#{projectid}
+            ,userid=#{userid}
+            ,money=#{money}
+            ,investtime=#{investtime}
+            ,paytime=#{paytime}
+            ,note=#{note}
+        where id=#{id}
+    </update>
+
+    <!-- 通过Invest的id将Invest中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyInvestById" parameterType="club.agtop.p2p.entity.Invest">
+        update p_invest
+        <set>
+            <if test="projectid != null">
+                projectid=#{projectid},
+            </if>
+            <if test="userid != null">
+                userid=#{userid},
+            </if>
+            <if test="money != null">
+                money=#{money},
+            </if>
+            <if test="investtime != null">
+                investtime=#{investtime},
+            </if>
+            <if test="paytime != null">
+                paytime=#{paytime},
+            </if>
+            <if test="note != null">
+                note=#{note},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

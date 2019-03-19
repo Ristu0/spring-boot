@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.agtop.p2p.dao.ProjectDao">
+    <!-- Project的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_Project_Map" type="club.agtop.p2p.entity.Project">
+        <id column="id" property="id"/>
+        <result column="projectname" property="projectname"/>
+        <result column="tel" property="tel"/>
+        <result column="loantype" property="loantype"/>
+        <result column="money" property="money"/>
+        <result column="loantime" property="loantime"/>
+        <result column="rate" property="rate"/>
+        <result column="loanuse" property="loanuse"/>
+        <result column="minmoney" property="minmoney"/>
+        <result column="maxmoney" property="maxmoney"/>
+        <result column="validtime" property="validtime"/>
+        <result column="repaytype" property="repaytype"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <!-- 数据库中表名为:p_project的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="p_project_Column">
+        p_project.id as id
+        ,p_project.projectname as projectname
+        ,p_project.tel as tel
+        ,p_project.loantype as loantype
+        ,p_project.money as money
+        ,p_project.loantime as loantime
+        ,p_project.rate as rate
+        ,p_project.loanuse as loanuse
+        ,p_project.minmoney as minmoney
+        ,p_project.maxmoney as maxmoney
+        ,p_project.validtime as validtime
+        ,p_project.repaytype as repaytype
+        ,p_project.status as status
+    </sql>
+
+    <!--获得类名为:Project对应的数据库表的数据总行数 -->
+    <select id="getProjectRowCount" resultType="java.lang.Long">
+        select count(id) from p_project
+    </select>
+    <!-- 获得类名为:Project对应数据库中表的数据集合 -->
+    <select id="selectProject" resultMap="result_Project_Map">
+        select
+        <include refid="p_project_Column"/>
+        from p_project
+    </select>
+
+    <!-- 获得一个Project对象,以参数Project对象中不为空的属性作为条件进行查询-->
+    <select id="selectProjectByObj" parameterType="club.agtop.p2p.entity.Project" resultMap="result_Project_Map">
+        select
+        <include refid="p_project_Column"/>
+        from p_project
+        <where>
+            <if test="status != null ">and p_project.status = #{status}</if>
+            <if test="repaytype != null ">and p_project.repaytype = #{repaytype}</if>
+            <if test="validtime != null ">and p_project.validtime = #{validtime}</if>
+            <if test="maxmoney != null ">and p_project.maxmoney = #{maxmoney}</if>
+            <if test="minmoney != null ">and p_project.minmoney = #{minmoney}</if>
+            <if test="loanuse != null ">and p_project.loanuse = #{loanuse}</if>
+            <if test="rate != null ">and p_project.rate = #{rate}</if>
+            <if test="loantime != null ">and p_project.loantime = #{loantime}</if>
+            <if test="money != null ">and p_project.money = #{money}</if>
+            <if test="loantype != null ">and p_project.loantype = #{loantype}</if>
+            <if test="tel != null ">and p_project.tel = #{tel}</if>
+            <if test="projectname != null ">and p_project.projectname = #{projectname}</if>
+            <if test="id != null ">and p_project.id = #{id}</if>
+        </where>
+    </select>
+
+    <!-- 通过Project的id获得对应数据库中表的数据对象-->
+    <select id="selectProjectById" parameterType="java.lang.Integer" resultMap="result_Project_Map">
+        select
+        <include refid="p_project_Column"/>
+        from p_project
+        where p_project.id = #{id}
+    </select>
+
+    <!-- 将Project插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertProject" parameterType="club.agtop.p2p.entity.Project">
+        insert into p_project(id,projectname,tel,loantype,money,loantime,rate,loanuse,minmoney,maxmoney,validtime,repaytype,status) 
+        values(#{id},#{projectname},#{tel},#{loantype},#{money},#{loantime},#{rate},#{loanuse},#{minmoney},#{maxmoney},#{validtime},#{repaytype},#{status})
+    </insert>
+
+    <!-- 将Project中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyProject" parameterType="club.agtop.p2p.entity.Project">
+        insert into p_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="projectname != null">projectname,</if>
+            <if test="tel != null">tel,</if>
+            <if test="loantype != null">loantype,</if>
+            <if test="money != null">money,</if>
+            <if test="loantime != null">loantime,</if>
+            <if test="rate != null">rate,</if>
+            <if test="loanuse != null">loanuse,</if>
+            <if test="minmoney != null">minmoney,</if>
+            <if test="maxmoney != null">maxmoney,</if>
+            <if test="validtime != null">validtime,</if>
+            <if test="repaytype != null">repaytype,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="projectname != null">#{projectname},</if>
+            <if test="tel != null">#{tel},</if>
+            <if test="loantype != null">#{loantype},</if>
+            <if test="money != null">#{money},</if>
+            <if test="loantime != null">#{loantime},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="loanuse != null">#{loanuse},</if>
+            <if test="minmoney != null">#{minmoney},</if>
+            <if test="maxmoney != null">#{maxmoney},</if>
+            <if test="validtime != null">#{validtime},</if>
+            <if test="repaytype != null">#{repaytype},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <!-- 通过Project的id将数据库表中对应的数据删除-->
+    <delete id="deleteProjectById" parameterType="java.lang.Integer">
+        delete from p_project
+        where id = #{id}
+    </delete>
+
+    <!-- 通过Project的id将Project的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updateProjectById" parameterType="club.agtop.p2p.entity.Project">
+        update p_project set
+            projectname=#{projectname}
+            ,tel=#{tel}
+            ,loantype=#{loantype}
+            ,money=#{money}
+            ,loantime=#{loantime}
+            ,rate=#{rate}
+            ,loanuse=#{loanuse}
+            ,minmoney=#{minmoney}
+            ,maxmoney=#{maxmoney}
+            ,validtime=#{validtime}
+            ,repaytype=#{repaytype}
+            ,status=#{status}
+        where id=#{id}
+    </update>
+
+    <!-- 通过Project的id将Project中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyProjectById" parameterType="club.agtop.p2p.entity.Project">
+        update p_project
+        <set>
+            <if test="projectname != null">
+                projectname=#{projectname},
+            </if>
+            <if test="tel != null">
+                tel=#{tel},
+            </if>
+            <if test="loantype != null">
+                loantype=#{loantype},
+            </if>
+            <if test="money != null">
+                money=#{money},
+            </if>
+            <if test="loantime != null">
+                loantime=#{loantime},
+            </if>
+            <if test="rate != null">
+                rate=#{rate},
+            </if>
+            <if test="loanuse != null">
+                loanuse=#{loanuse},
+            </if>
+            <if test="minmoney != null">
+                minmoney=#{minmoney},
+            </if>
+            <if test="maxmoney != null">
+                maxmoney=#{maxmoney},
+            </if>
+            <if test="validtime != null">
+                validtime=#{validtime},
+            </if>
+            <if test="repaytype != null">
+                repaytype=#{repaytype},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

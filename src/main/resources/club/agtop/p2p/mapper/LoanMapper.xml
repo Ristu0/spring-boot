@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.agtop.p2p.dao.LoanDao">
+    <!-- Loan的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_Loan_Map" type="club.agtop.p2p.entity.Loan">
+        <id column="id" property="id"/>
+        <result column="realname" property="realname"/>
+        <result column="tel" property="tel"/>
+        <result column="region" property="region"/>
+        <result column="money" property="money"/>
+        <result column="loantime" property="loantime"/>
+        <result column="loantype" property="loantype"/>
+        <result column="loanuser" property="loanuser"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <!-- 数据库中表名为:p_loan的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="p_loan_Column">
+        p_loan.id as id
+        ,p_loan.realname as realname
+        ,p_loan.tel as tel
+        ,p_loan.region as region
+        ,p_loan.money as money
+        ,p_loan.loantime as loantime
+        ,p_loan.loantype as loantype
+        ,p_loan.loanuser as loanuser
+        ,p_loan.status as status
+    </sql>
+
+    <!--获得类名为:Loan对应的数据库表的数据总行数 -->
+    <select id="getLoanRowCount" resultType="java.lang.Long">
+        select count(id) from p_loan
+    </select>
+    <!-- 获得类名为:Loan对应数据库中表的数据集合 -->
+    <select id="selectLoan" resultMap="result_Loan_Map">
+        select
+        <include refid="p_loan_Column"/>
+        from p_loan
+    </select>
+
+    <!-- 获得一个Loan对象,以参数Loan对象中不为空的属性作为条件进行查询-->
+    <select id="selectLoanByObj" parameterType="club.agtop.p2p.entity.Loan" resultMap="result_Loan_Map">
+        select
+        <include refid="p_loan_Column"/>
+        from p_loan
+        <where>
+            <if test="status != null ">and p_loan.status = #{status}</if>
+            <if test="loanuser != null ">and p_loan.loanuser = #{loanuser}</if>
+            <if test="loantype != null ">and p_loan.loantype = #{loantype}</if>
+            <if test="loantime != null ">and p_loan.loantime = #{loantime}</if>
+            <if test="money != null ">and p_loan.money = #{money}</if>
+            <if test="region != null ">and p_loan.region = #{region}</if>
+            <if test="tel != null ">and p_loan.tel = #{tel}</if>
+            <if test="realname != null ">and p_loan.realname = #{realname}</if>
+            <if test="id != null ">and p_loan.id = #{id}</if>
+        </where>
+    </select>
+
+    <!-- 通过Loan的id获得对应数据库中表的数据对象-->
+    <select id="selectLoanById" parameterType="java.lang.Integer" resultMap="result_Loan_Map">
+        select
+        <include refid="p_loan_Column"/>
+        from p_loan
+        where p_loan.id = #{id}
+    </select>
+
+    <!-- 将Loan插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertLoan" parameterType="club.agtop.p2p.entity.Loan">
+        insert into p_loan(id,realname,tel,region,money,loantime,loantype,loanuser,status) 
+        values(#{id},#{realname},#{tel},#{region},#{money},#{loantime},#{loantype},#{loanuser},#{status})
+    </insert>
+
+    <!-- 将Loan中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyLoan" parameterType="club.agtop.p2p.entity.Loan">
+        insert into p_loan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="realname != null">realname,</if>
+            <if test="tel != null">tel,</if>
+            <if test="region != null">region,</if>
+            <if test="money != null">money,</if>
+            <if test="loantime != null">loantime,</if>
+            <if test="loantype != null">loantype,</if>
+            <if test="loanuser != null">loanuser,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="realname != null">#{realname},</if>
+            <if test="tel != null">#{tel},</if>
+            <if test="region != null">#{region},</if>
+            <if test="money != null">#{money},</if>
+            <if test="loantime != null">#{loantime},</if>
+            <if test="loantype != null">#{loantype},</if>
+            <if test="loanuser != null">#{loanuser},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <!-- 通过Loan的id将数据库表中对应的数据删除-->
+    <delete id="deleteLoanById" parameterType="java.lang.Integer">
+        delete from p_loan
+        where id = #{id}
+    </delete>
+
+    <!-- 通过Loan的id将Loan的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updateLoanById" parameterType="club.agtop.p2p.entity.Loan">
+        update p_loan set
+            realname=#{realname}
+            ,tel=#{tel}
+            ,region=#{region}
+            ,money=#{money}
+            ,loantime=#{loantime}
+            ,loantype=#{loantype}
+            ,loanuser=#{loanuser}
+            ,status=#{status}
+        where id=#{id}
+    </update>
+
+    <!-- 通过Loan的id将Loan中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyLoanById" parameterType="club.agtop.p2p.entity.Loan">
+        update p_loan
+        <set>
+            <if test="realname != null">
+                realname=#{realname},
+            </if>
+            <if test="tel != null">
+                tel=#{tel},
+            </if>
+            <if test="region != null">
+                region=#{region},
+            </if>
+            <if test="money != null">
+                money=#{money},
+            </if>
+            <if test="loantime != null">
+                loantime=#{loantime},
+            </if>
+            <if test="loantype != null">
+                loantype=#{loantype},
+            </if>
+            <if test="loanuser != null">
+                loanuser=#{loanuser},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>
