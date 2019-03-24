@@ -1,7 +1,11 @@
 package club.agtop.p2p.service.impl;
 
 import club.agtop.p2p.dao.ProjectDao;
+import club.agtop.p2p.dao.UserDao;
+import club.agtop.p2p.dto.ProjectDTO;
+import club.agtop.p2p.dto.RepayDTO;
 import club.agtop.p2p.entity.Project;
+import club.agtop.p2p.entity.User;
 import club.agtop.p2p.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +16,8 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProjectDao projectDao;
-
+    @Autowired
+    private UserDao userDao;
     @Override
     public long getProjectRowCount() {
         return projectDao.getProjectRowCount();
@@ -66,4 +71,17 @@ public class ProjectServiceImpl implements ProjectService {
         this.projectDao = projectDao;
     }
 
+    @Override
+    public ProjectDTO projectDetail(Integer id) {
+        Project project = projectDao.selectProjectById(id);
+        User user = new User();
+        user.setTel(project.getTel());
+        User user1 = userDao.selectUserByObj(user);
+        project.setUser(user1);
+        List<RepayDTO> repayDTOS = userDao.selectRepay(id);
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.setProject(project);
+        projectDTO.setRepayDTOS(repayDTOS);
+        return projectDTO;
+    }
 }

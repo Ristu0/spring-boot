@@ -36,7 +36,7 @@
 
                                     <div class="space-6"></div>
 
-                                    <form method="post" action="${pageContext.request.contextPath}/admin/login" id="fm">
+                                    <form method="post" action="${pageContext.request.contextPath}/login" id="fm">
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
@@ -57,11 +57,6 @@
                                             <div class="space"></div>
 
                                             <div class="clearfix">
-                                                <label class="inline">
-                                                    <input type="checkbox" class="ace"/>
-                                                    <span class="lbl"> 记住我</span>
-                                                </label>
-
                                                 <button type="button"
                                                         class="width-35 pull-right btn btn-sm btn-primary">
                                                     <i class="ace-icon fa fa-key"></i>

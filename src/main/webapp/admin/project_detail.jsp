@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -50,11 +52,12 @@
 
                                 <div class="widget-toolbar no-border invoice-info">
                                     <span class="invoice-info-label">项目编号:</span>
-                                    <span class="red">#121212</span>
+                                    <span class="red">#${requestScope.project.project.id}</span>
 
                                     <br/>
                                     <span class="invoice-info-label">项目发起时间:</span>
-                                    <span class="blue">2018/07/30</span>
+                                    <span class="blue"><fmt:formatDate value="${requestScope.project.project.loantime}"
+                                                                       pattern="yyyy年MM月dd日"/></span>
                                 </div>
 
                                 <div class="widget-toolbar hidden-480">
@@ -78,28 +81,40 @@
                                                 <ul class="list-unstyled spaced">
                                                     <li>
                                                         <i class="icon-caret-right blue"></i>
-                                                        项目名：体验标
+                                                        项目名：${requestScope.project.project.projectname}
                                                     </li>
 
                                                     <li>
                                                         <i class="icon-caret-right blue"></i>
-                                                        借款人：王五
+                                                        借款人：${requestScope.project.project.user.realname}
                                                     </li>
 
                                                     <li>
                                                         <i class="icon-caret-right blue"></i>
-                                                        借款期限：12月
+                                                        借款期限：${requestScope.project.project.loan}月
                                                     </li>
 
                                                     <li>
                                                         <i class="icon-caret-right blue"></i>
-                                                        项目年率:10%
+                                                        项目年率:${requestScope.project.project.rate}%
 
                                                     </li>
 
                                                     <li>
                                                         <i class="icon-caret-right blue"></i>
-                                                        项目状态：进行中
+                                                        项目状态：
+                                                        <c:if test="${requestScope.project.project.status==1}">
+                                                            筹资中
+                                                        </c:if>
+                                                        <c:if test="${requestScope.project.project.status==2}">
+                                                            已流标
+                                                        </c:if>
+                                                        <c:if test="${requestScope.project.project.status==3}">
+                                                            已完成
+                                                        </c:if>
+                                                        <c:if test="${requestScope.project.project.status==4}">
+                                                            已销毁
+                                                        </c:if>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -116,22 +131,22 @@
                                                 <ul class="list-unstyled  spaced">
                                                     <li>
                                                         <i class="icon-caret-right green"></i>
-                                                        姓名：王五
+                                                        姓名：${requestScope.project.project.user.realname}
                                                     </li>
 
                                                     <li>
                                                         <i class="icon-caret-right green"></i>
-                                                        账户：wangwu
+                                                        账户：${requestScope.project.project.user.tel}
                                                     </li>
 
                                                     <li>
                                                         <i class="icon-caret-right green"></i>
-                                                        手机号：13569965866
+                                                        手机号：${requestScope.project.project.user.tel}
                                                     </li>
 
                                                     <li>
                                                         <i class="icon-caret-right green"></i>
-                                                        身份号码：441998556234545
+                                                        身份号码：${requestScope.project.project.user.postcard}
                                                     </li>
                                                 </ul>
                                             </div>
@@ -152,28 +167,19 @@
                                             </thead>
 
                                             <tbody>
+                                            <c:forEach items="${requestScope.project.repayDTOS}" var="r" varStatus="vs">
                                             <tr>
-                                                <td class="center">1</td>
+                                                <td class="center">${vs.count}</td>
                                                 <td>
-                                                    张三
+                                                        ${r.realname}
                                                 </td>
                                                 <td class="hidden-xs">
-                                                    ￥1000
+                                                    ￥${r.money}
                                                 </td>
-                                                <td class="hidden-480">2018-08-01 12:23:33</td>
+                                                <td class="hidden-480"><fmt:formatDate value="${r.repaytime}"
+                                                                                       pattern="yyyy年MM月dd日"/></td>
                                             </tr>
-
-                                            <tr>
-                                                <td class="center">2</td>
-                                                <td>
-                                                    李四
-                                                </td>
-                                                <td class="hidden-xs">
-                                                    ￥3000
-                                                </td>
-                                                <td class="hidden-480">2018-08-02 15:33:21</td>
-                                            </tr>
-
+                                            </c:forEach>
                                             </tbody>
                                         </table>
                                     </div>
@@ -184,7 +190,7 @@
                                         <div class="col-sm-5 pull-right">
                                             <h4 class="pull-right">
                                                 投资总额 :
-                                                <span class="red">￥4000</span>
+                                                <span class="red">￥${requestScope.project.repaySum}</span>
                                             </h4>
                                         </div>
                                     </div>

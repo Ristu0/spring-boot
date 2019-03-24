@@ -1,12 +1,14 @@
 package club.agtop.p2p.entity;
 
+import java.util.Date;
+
 public class Project {
     private Integer id;
     private String projectname;
     private String tel;
     private String loantype;
     private Double money;
-    private java.util.Date loantime;
+    private Integer loan;
     private Integer rate;
     private String loanuse;
     private Double minmoney;
@@ -14,19 +16,20 @@ public class Project {
     private Integer validtime;
     private Integer repaytype;
     private Integer status;
+    private Double paymoney;
+    private Date loantime;
+    private User user;
 
     public Project() {
-        super();
     }
 
-    public Project(Integer id, String projectname, String tel, String loantype, Double money, java.util.Date loantime, Integer rate, String loanuse, Double minmoney, Double maxmoney, Integer validtime, Integer repaytype, Integer status) {
-        super();
+    public Project(Integer id, String projectname, String tel, String loantype, Double money, Integer loan, Integer rate, String loanuse, Double minmoney, Double maxmoney, Integer validtime, Integer repaytype, Integer status, Double paymoney, Date loantime, User user) {
         this.id = id;
         this.projectname = projectname;
         this.tel = tel;
         this.loantype = loantype;
         this.money = money;
-        this.loantime = loantime;
+        this.loan = loan;
         this.rate = rate;
         this.loanuse = loanuse;
         this.minmoney = minmoney;
@@ -34,10 +37,13 @@ public class Project {
         this.validtime = validtime;
         this.repaytype = repaytype;
         this.status = status;
+        this.paymoney = paymoney;
+        this.loantime = loantime;
+        this.user = user;
     }
 
     public Integer getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Integer id) {
@@ -45,7 +51,7 @@ public class Project {
     }
 
     public String getProjectname() {
-        return this.projectname;
+        return projectname;
     }
 
     public void setProjectname(String projectname) {
@@ -53,7 +59,7 @@ public class Project {
     }
 
     public String getTel() {
-        return this.tel;
+        return tel;
     }
 
     public void setTel(String tel) {
@@ -61,7 +67,7 @@ public class Project {
     }
 
     public String getLoantype() {
-        return this.loantype;
+        return loantype;
     }
 
     public void setLoantype(String loantype) {
@@ -69,23 +75,23 @@ public class Project {
     }
 
     public Double getMoney() {
-        return this.money;
+        return money;
     }
 
     public void setMoney(Double money) {
         this.money = money;
     }
 
-    public java.util.Date getLoantime() {
-        return this.loantime;
+    public Integer getLoan() {
+        return loan;
     }
 
-    public void setLoantime(java.util.Date loantime) {
-        this.loantime = loantime;
+    public void setLoan(Integer loan) {
+        this.loan = loan;
     }
 
     public Integer getRate() {
-        return this.rate;
+        return rate;
     }
 
     public void setRate(Integer rate) {
@@ -93,7 +99,7 @@ public class Project {
     }
 
     public String getLoanuse() {
-        return this.loanuse;
+        return loanuse;
     }
 
     public void setLoanuse(String loanuse) {
@@ -101,7 +107,7 @@ public class Project {
     }
 
     public Double getMinmoney() {
-        return this.minmoney;
+        return minmoney;
     }
 
     public void setMinmoney(Double minmoney) {
@@ -109,7 +115,7 @@ public class Project {
     }
 
     public Double getMaxmoney() {
-        return this.maxmoney;
+        return maxmoney;
     }
 
     public void setMaxmoney(Double maxmoney) {
@@ -117,7 +123,7 @@ public class Project {
     }
 
     public Integer getValidtime() {
-        return this.validtime;
+        return validtime;
     }
 
     public void setValidtime(Integer validtime) {
@@ -125,7 +131,7 @@ public class Project {
     }
 
     public Integer getRepaytype() {
-        return this.repaytype;
+        return repaytype;
     }
 
     public void setRepaytype(Integer repaytype) {
@@ -133,11 +139,56 @@ public class Project {
     }
 
     public Integer getStatus() {
-        return this.status;
+        return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
     }
 
+    public Double getPaymoney() {
+        return paymoney;
+    }
+
+    public void setPaymoney(Double paymoney) {
+        this.paymoney = paymoney;
+    }
+
+    public Date getLoantime() {
+        return loantime;
+    }
+
+    public void setLoantime(Date loantime) {
+        this.loantime = loantime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", projectname='" + projectname + '\'' +
+                ", tel='" + tel + '\'' +
+                ", loantype='" + loantype + '\'' +
+                ", money=" + money +
+                ", loan=" + loan +
+                ", rate=" + rate +
+                ", loanuse='" + loanuse + '\'' +
+                ", minmoney=" + minmoney +
+                ", maxmoney=" + maxmoney +
+                ", validtime=" + validtime +
+                ", repaytype=" + repaytype +
+                ", status=" + status +
+                ", paymoney=" + paymoney +
+                ", loantime=" + loantime +
+                ", user=" + user +
+                '}';
+    }
 }

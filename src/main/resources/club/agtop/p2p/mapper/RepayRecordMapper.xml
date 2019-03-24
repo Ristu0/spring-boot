@@ -1,136 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="club.agtop.p2p.dao.RepayRecordDao">
-    <!-- RepayRecord的resultMap,column是给数据库列起的别名,它对应property类的属性-->
-    <resultMap id="result_RepayRecord_Map" type="club.agtop.p2p.entity.RepayRecord">
-        <id column="id" property="id"/>
-        <result column="userid" property="userid"/>
-        <result column="projectid" property="projectid"/>
+    <resultMap id="repayMaper" type="RepayRecord">
+        <id property="id" column="id"/>
         <result column="money" property="money"/>
         <result column="repaytime" property="repaytime"/>
         <result column="banlence" property="banlence"/>
         <result column="status" property="status"/>
+        <association property="user" javaType="User">
+            <id column="userid" property="id"/>
+            <result column="realname" property="realname"/>
+            <result column="tel" property="tel"/>
+        </association>
+        <association property="project" javaType="Project">
+            <id column="projectid" property="id"/>
+            <result column="projectname" property="projectname"/>
+            <result column="pmoney" property="money"/>
+            <result column="loan" property="loan"/>
+            <result column="loanuse" property="loanuse"/>
+            <result column="loantype" property="loantype"/>
+            <result column="loantime" property="loantime"/>
+        </association>
     </resultMap>
-
-    <!-- 数据库中表名为:p_repay_record的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
-    <sql id="p_repay_record_Column">
-        p_repay_record.id as id
-        ,p_repay_record.userid as userid
-        ,p_repay_record.projectid as projectid
-        ,p_repay_record.money as money
-        ,p_repay_record.repaytime as repaytime
-        ,p_repay_record.banlence as banlence
-        ,p_repay_record.status as status
-    </sql>
-
-    <!--获得类名为:RepayRecord对应的数据库表的数据总行数 -->
-    <select id="getRepayRecordRowCount" resultType="java.lang.Long">
-        select count(id) from p_repay_record
-    </select>
-    <!-- 获得类名为:RepayRecord对应数据库中表的数据集合 -->
-    <select id="selectRepayRecord" resultMap="result_RepayRecord_Map">
-        select
-        <include refid="p_repay_record_Column"/>
-        from p_repay_record
-    </select>
-
-    <!-- 获得一个RepayRecord对象,以参数RepayRecord对象中不为空的属性作为条件进行查询-->
-    <select id="selectRepayRecordByObj" parameterType="club.agtop.p2p.entity.RepayRecord"
-            resultMap="result_RepayRecord_Map">
-        select
-        <include refid="p_repay_record_Column"/>
-        from p_repay_record
-        <where>
-            <if test="status != null ">and p_repay_record.status = #{status}</if>
-            <if test="banlence != null ">and p_repay_record.banlence = #{banlence}</if>
-            <if test="repaytime != null ">and p_repay_record.repaytime = #{repaytime}</if>
-            <if test="money != null ">and p_repay_record.money = #{money}</if>
-            <if test="projectid != null ">and p_repay_record.projectid = #{projectid}</if>
-            <if test="userid != null ">and p_repay_record.userid = #{userid}</if>
-            <if test="id != null ">and p_repay_record.id = #{id}</if>
-        </where>
-    </select>
-
-    <!-- 通过RepayRecord的id获得对应数据库中表的数据对象-->
-    <select id="selectRepayRecordById" parameterType="java.lang.Integer" resultMap="result_RepayRecord_Map">
-        select
-        <include refid="p_repay_record_Column"/>
-        from p_repay_record
-        where p_repay_record.id = #{id}
-    </select>
-
-    <!-- 将RepayRecord插入到对应数据库的表中,包括属性值为null的数据-->
-
-    <insert id="insertRepayRecord" parameterType="club.agtop.p2p.entity.RepayRecord">
-        insert into p_repay_record(id,userid,projectid,money,repaytime,banlence,status) 
-        values(#{id},#{userid},#{projectid},#{money},#{repaytime},#{banlence},#{status})
-    </insert>
-
-    <!-- 将RepayRecord中属性值不为null的数据,插入到对应数据库的表中-->
-    <insert id="insertNonEmptyRepayRecord" parameterType="club.agtop.p2p.entity.RepayRecord">
-        insert into p_repay_record
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">id,</if>
-            <if test="userid != null">userid,</if>
-            <if test="projectid != null">projectid,</if>
-            <if test="money != null">money,</if>
-            <if test="repaytime != null">repaytime,</if>
-            <if test="banlence != null">banlence,</if>
-            <if test="status != null">status,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">#{id},</if>
-            <if test="userid != null">#{userid},</if>
-            <if test="projectid != null">#{projectid},</if>
-            <if test="money != null">#{money},</if>
-            <if test="repaytime != null">#{repaytime},</if>
-            <if test="banlence != null">#{banlence},</if>
-            <if test="status != null">#{status},</if>
-        </trim>
-    </insert>
-
-    <!-- 通过RepayRecord的id将数据库表中对应的数据删除-->
-    <delete id="deleteRepayRecordById" parameterType="java.lang.Integer">
-        delete from p_repay_record
-        where id = #{id}
-    </delete>
-
-    <!-- 通过RepayRecord的id将RepayRecord的数据更新到数据库中对应的表,包括值null的数据-->
-    <update id="updateRepayRecordById" parameterType="club.agtop.p2p.entity.RepayRecord">
-        update p_repay_record set
-            userid=#{userid}
-            ,projectid=#{projectid}
-            ,money=#{money}
-            ,repaytime=#{repaytime}
-            ,banlence=#{banlence}
-            ,status=#{status}
-        where id=#{id}
-    </update>
-
-    <!-- 通过RepayRecord的id将RepayRecord中属性值不为null的数据更新到数据库对应的表中-->
-    <update id="updateNonEmptyRepayRecordById" parameterType="club.agtop.p2p.entity.RepayRecord">
-        update p_repay_record
-        <set>
-            <if test="userid != null">
-                userid=#{userid},
-            </if>
-            <if test="projectid != null">
-                projectid=#{projectid},
-            </if>
-            <if test="money != null">
-                money=#{money},
-            </if>
-            <if test="repaytime != null">
-                repaytime=#{repaytime},
-            </if>
-            <if test="banlence != null">
-                banlence=#{banlence},
-            </if>
-            <if test="status != null">
-                status=#{status},
-            </if>
-        </set>
-        where id=#{id}
-    </update>
-
+    <select id="selectAll" resultMap="repayMaper">
+                SELECT
+                    r.id AS id,
+                    r.money AS money,
+                    r.repaytime AS repaytime,
+                    r.banlence AS banlence,
+                    r.`status` AS `status`,
+                    u.id AS userid,
+                    u.realname AS realname,
+                    u.tel AS tel,
+                    p.id AS projectid,
+                  p.projectname as projectname,
+                  p.money as pmoney,
+                  p.loan as loan,
+                  p.loanuse as loanuse,
+                  p.loantype as loantype,
+                  p.loantime as loantime
+                FROM
+                    p_repay_record r
+                LEFT JOIN p_project p ON r.projectid = p.id
+                LEFT JOIN p_user u ON r.userid = u.id
+   </select>
 </mapper>

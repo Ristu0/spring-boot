@@ -1,5 +1,6 @@
 package club.agtop.p2p.service;
 
+import club.agtop.p2p.dto.ProjectDTO;
 import club.agtop.p2p.entity.Project;
 
 import java.util.List;
@@ -74,4 +75,9 @@ public interface ProjectService {
      * @return
      */
     int updateNonEmptyProjectById(Project enti);
+
+    /**
+     * 查询项目的投资详情
+     */
+    ProjectDTO projectDetail(Integer id);
 }

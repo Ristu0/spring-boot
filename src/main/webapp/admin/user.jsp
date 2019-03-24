@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
@@ -59,10 +61,7 @@
                                                 </label>
                                             </th>
                                             <th>用户名</th>
-                                            <th>姓名</th>
-                                            <th>性别</th>
-                                            <th>出生日期</th>
-                                            <th>联系方式</th>
+                                            <th>真实姓名</th>
                                             <th>身份证号码</th>
                                             <th>注册日期</th>
                                             <th>操作</th>
@@ -70,32 +69,30 @@
                                         </thead>
 
                                         <tbody>
-                                        <tr>
-                                            <td class="center">
-                                                <label class="position-relative">
-                                                    <input type="checkbox" class="ace"/>
-                                                    <span class="lbl"></span>
-                                                </label>
-                                            </td>
-                                            <td>wudang</td>
-                                            <td>(。・・)ノ飞雪</td>
-                                            <td>男</td>
-                                            <td>2000-08-01</td>
-                                            <td>13512345678</td>
-                                            <td><span class="label label-sm label-warning">410420200008013124</span>
-                                            </td>
+                                        <c:forEach items="${requestScope.users}" var="u" varStatus="vs">
+                                            <tr>
+                                                <td class="center">
+                                                    <label class="position-relative">
+                                                        <input type="checkbox" class="ace"/>
+                                                        <span class="lbl"></span>
+                                                    </label>
+                                                </td>
+                                                <td>${u.tel}</td>
+                                                <td>${u.realname}</td>
+                                                <td>${u.postcard}</td>
+                                                <td><fmt:formatDate value="${u.createtime}" pattern="yyyy年MM月dd日"/></td>
+                                                <td>
+                                                    <div class="hidden-sm hidden-xs btn-group">
 
-                                            <td>2018-07-01 13:32:21</td>
-                                            <td>
-                                                <div class="hidden-sm hidden-xs btn-group">
+                                                        <a class="btn btn-xs btn-danger"
+                                                           href="${pageContext.request.contextPath}/admin/removeUser">
+                                                            <i class="ace-icon fa fa-trash-o bigger-120">&nbsp;注销用户</i>
+                                                        </a>
 
-                                                    <a class="btn btn-xs btn-danger">
-                                                        <i class="ace-icon fa fa-trash-o bigger-120">&nbsp;加入黑名单</i>
-                                                    </a>
-
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
 

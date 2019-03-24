@@ -34,7 +34,7 @@
             <ul class="submenu">
 
                 <li class="">
-                    <a href="../admin/user.jsp">
+                    <a href="${pageContext.request.contextPath}/admin/userList">
                         <i class="menu-icon fa fa-caret-right"></i>
                         用户信息
                     </a>
@@ -64,7 +64,7 @@
             <ul class="submenu">
 
                 <li class="">
-                    <a href="../admin/uncheck_borrow.jsp">
+                    <a href="${pageContext.request.contextPath}/admin/uncheckLoanList">
                         <i class="menu-icon fa fa-caret-right"></i>
                         未审核借款
                     </a>
@@ -73,7 +73,7 @@
                 </li>
 
                 <li class="">
-                    <a href="../admin/check_borrow.jsp">
+                    <a href="${pageContext.request.contextPath}/admin/checkLoanList">
                         <i class="menu-icon fa fa-caret-right"></i>
                         已审核借款
                     </a>
@@ -82,7 +82,7 @@
                 </li>
 
                 <li class="">
-                    <a href="../admin/unpass_borrow.jsp">
+                    <a href="${pageContext.request.contextPath}/admin/unpassLoanList">
                         <i class="menu-icon fa fa-caret-right"></i>
                         未通过借款
                     </a>
@@ -93,7 +93,7 @@
 
         <!--  -->
         <li class="">
-            <a href="../admin/project.jsp">
+            <a href="${pageContext.request.contextPath}/admin/projectList">
                 <i class="menu-icon fa fa-list-alt"></i>
                 <span class="menu-text">项目管理</span>
             </a>
@@ -113,7 +113,7 @@
             <ul class="submenu">
 
                 <li class="">
-                    <a href="../admin/unrepayment.jsp">
+                    <a href="${pageContext.request.contextPath}/admin/unrepayList">
                         <i class="menu-icon fa fa-caret-right"></i>
                         未还款信息
                     </a>
@@ -122,13 +122,33 @@
                 </li>
 
                 <li class="">
-                    <a href="../admin/repayment.jsp">
+                    <a href="${pageContext.request.contextPath}/admin/repayList">
                         <i class="menu-icon fa fa-caret-right"></i>
                         已还款信息
                     </a>
 
                     <b class="arrow"></b>
                 </li>
+            </ul>
+        </li>
+        <li class="">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fa-pencil-square-o"></i>
+                <span class="menu-text">统计管理</span>
+
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+
+            <b class="arrow"></b>
+            <ul class="submenu">
+                <li class="">
+                    <a href="${pageContext.request.contextPath}/admin/statistics_user.jsp">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        近一周用户使用信息
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+
             </ul>
         </li>
     </ul>

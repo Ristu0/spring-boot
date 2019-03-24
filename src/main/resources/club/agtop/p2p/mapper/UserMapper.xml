@@ -149,5 +149,7 @@
         </set>
         where id=#{id}
     </update>
-
+    <select id="selectRepay" resultType="club.agtop.p2p.dto.RepayDTO">
+    select r.money as money,u.realname as realname,r.paytime as repaytime from p_invest r  LEFT JOIN p_user u on r.userid = u.id where r.projectid=#{id}
+</select>
 </mapper>

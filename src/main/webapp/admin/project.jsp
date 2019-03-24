@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
@@ -56,7 +58,6 @@
                                             </th>
                                             <th>项目名称</th>
                                             <th>申请人</th>
-                                            <th>所在地区</th>
                                             <th>借款金额</th>
                                             <th>借款期限</th>
                                             <th>借款类型</th>
@@ -75,86 +76,74 @@
                                         </thead>
 
                                         <tbody>
-                                        <tr>
-                                            <td class="center">
-                                                <label class="position-relative">
-                                                    <input type="checkbox" class="ace"/>
-                                                    <span class="lbl"></span>
-                                                </label>
-                                            </td>
-                                            <td><a href="project_detail.jsp">体验标</a></td>
-                                            <td>wudang</td>
-                                            <td>河南郑州</td>
-                                            <td>￥1000000</td>
-                                            <td>12月</td>
-                                            <td><span class="label label-sm label-warning">信用</span></td>
-                                            <td>贷款买车</td>
-                                            <td>2018-07-09 15:12:23</td>
-                                            <td>18%</td>
-
-                                            <td>10%</td>
-                                            <td>0天</td>
-                                            <td>到期还本付息</td>
-                                            <td>流标</td>
-                                            <td>
-                                                <a href="#"><span class="label label-inverse arrowed">撤标</span></a>
-                                            </td>
-                                        </tr>
-
-
-                                        <tr>
-                                            <td class="center">
-                                                <label class="position-relative">
-                                                    <input type="checkbox" class="ace"/>
-                                                    <span class="lbl"></span>
-                                                </label>
-                                            </td>
-                                            <td><a href="project_detail.jsp">体验标1</a></td>
-                                            <td>wudang</td>
-                                            <td>河南郑州</td>
-                                            <td>￥1000000</td>
-                                            <td>12月</td>
-                                            <td><span class="label label-sm label-warning">信用</span></td>
-                                            <td>贷款买车</td>
-                                            <td>2018-07-09 15:12:23</td>
-                                            <td>28%</td>
-
-                                            <td>10%</td>
-                                            <td>3天</td>
-                                            <td>到期还本付息</td>
-                                            <td>投资中</td>
-                                            <td>
-                                                <a href="#"><span class="label label-inverse arrowed">撤标</span></a>
-                                            </td>
-                                        </tr>
-
-
-                                        <tr>
-                                            <td class="center">
-                                                <label class="position-relative">
-                                                    <input type="checkbox" class="ace"/>
-                                                    <span class="lbl"></span>
-                                                </label>
-                                            </td>
-                                            <td><a href="project_detail.jsp">体验标2</a></td>
-                                            <td>wudang</td>
-                                            <td>河南郑州</td>
-                                            <td>￥1000000</td>
-                                            <td>12月</td>
-                                            <td><span class="label label-sm label-warning">信用</span></td>
-                                            <td>贷款买车</td>
-                                            <td>2018-07-09 15:12:23</td>
-                                            <td>100%</td>
-
-                                            <td>10%</td>
-                                            <td>3天</td>
-                                            <td>到期还本付息</td>
-                                            <td>已结束</td>
-                                            <td>
-                                                <a href="#"><span
-                                                        class="label label-success arrowed-in arrowed-in-right">放款</span></a>
-                                            </td>
-                                        </tr>
+                                        <c:forEach items="${requestScope.projects}" var="p">
+                                            <tr>
+                                                <td class="center">
+                                                    <label class="position-relative">
+                                                        <input type="checkbox" class="ace"/>
+                                                        <span class="lbl"></span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <a href="${pageContext.request.contextPath}/admin/projectDetail?id=${p.id}">${p.projectname}</a>
+                                                </td>
+                                                <td>${p.tel}</td>
+                                                <td>￥${p.money}</td>
+                                                <td>${p.loan}月</td>
+                                                <td><span class="label label-sm label-warning">${p.loantype}</span></td>
+                                                <td>${p.loanuse}</td>
+                                                <td><fmt:formatDate value="${p.loantime}" pattern="yyyy年MM月dd日"/></td>
+                                                <td>${p.paymoney/p.money*100}%</td>
+                                                <td>${p.rate}%</td>
+                                                <td>
+                                                    <jsp:useBean id="now" class="java.util.Date" scope="page"/>
+                                                    <fmt:formatDate value="${now}" type="date" var="nowdate"/>
+                                                    <fmt:formatDate var="loandate" type="date" value="${p.loantime}"/>
+                                                    <fmt:parseDate var="e" value="${nowdate}" pattern="yyyy-MM-dd"/>
+                                                    <fmt:parseDate var="s" value="${loandate}" pattern="yyyy-MM-dd"/>
+                                                    <fmt:formatNumber value="${(e.getTime()-s.getTime())/1000/60/60/24}"
+                                                                      pattern="#0" var="num"/>
+                                                    <c:if test="${7-num>0}">
+                                                        ${num}天
+                                                    </c:if>
+                                                    <c:if test="${7-num<=0}">
+                                                        0天
+                                                    </c:if>
+                                                </td>
+                                                <c:if test="${p.repaytype==1}">
+                                                    <td>到期还本付息</td>
+                                                </c:if>
+                                                <c:if test="${p.repaytype==2}">
+                                                    <td>按月分期</td>
+                                                </c:if>
+                                                <c:if test="${p.repaytype==3}">
+                                                    <td>先息后本</td>
+                                                </c:if>
+                                                <c:if test="${p.status==1}">
+                                                    <td>筹资中</td>
+                                                    <td>
+                                                        <a href="${pageContext.request.contextPath}/admin/downProject?id=${p.id}"><span
+                                                                class="label label-inverse arrowed">撤标</span></a>
+                                                    </td>
+                                                </c:if>
+                                                <c:if test="${p.status==2}">
+                                                    <td>已流标</td>
+                                                    <td>
+                                                        <a href="#"><span class="label label-inverse arrowed">销毁</span></a>
+                                                    </td>
+                                                </c:if>
+                                                <c:if test="${p.status==3}">
+                                                    <td>已完成</td>
+                                                    <td>
+                                                        <a href="#"><span
+                                                                class="label label-success arrowed-in arrowed-in-right">放款</span></a>
+                                                    </td>
+                                                </c:if>
+                                                <c:if test="${p.status==4}">
+                                                    <td>已销毁</td>
+                                                </c:if>
+                                            </tr>
+                                        </c:forEach>
 
                                         </tbody>
                                     </table>

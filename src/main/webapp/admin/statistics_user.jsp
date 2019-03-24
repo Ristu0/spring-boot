@@ -84,6 +84,25 @@
 
 <script src="${pageContext.request.contextPath}/js/highcharts.js"></script>
 <script>
+    function getDay(day) {
+        var today = new Date();
+        var targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+        today.setTime(targetday_milliseconds); //注意，这行是关键代码
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        return tYear + "-" + tMonth + "-" + tDate;
+    }
+
+    function doHandleMonth(month) {
+        var m = month;
+        if (month.toString().length == 1) {
+            m = "0" + month;
+        }
+        return m;
+    }
     Highcharts.chart('container', {
         title: {
             text: '近一周用户使用信息情况预览'
@@ -96,13 +115,13 @@
         },
         xAxis: {
             categories: [
-                "2018-07-01",
-                "2018-07-02",
-                "2018-07-03",
-                "2018-07-04",
-                "2018-07-05",
-                "2018-07-06",
-                "2018-07-07"
+                getDay(-6),
+                getDay(-5),
+                getDay(-4),
+                getDay(-3),
+                getDay(-2),
+                getDay(-1),
+                getDay(0)
             ]
         },
         legend: {

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
@@ -69,30 +71,37 @@
                                         </thead>
 
                                         <tbody>
-                                        <tr>
-                                            <td class="center">
-                                                <label class="position-relative">
-                                                    <input type="checkbox" class="ace"/>
-                                                    <span class="lbl"></span>
-                                                </label>
-                                            </td>
-                                            <td>wudang</td>
-                                            <td>体验标</td>
-                                            <td>13512345678</td>
-                                            <td>￥1000000</td>
-                                            <td>12月</td>
-                                            <td><span class="label label-sm label-warning">信用</span></td>
-                                            <td>贷款买车</td>
-                                            <td>2018-07-01 13:32:21</td>
-
-                                            <td>￥3012</td>
-                                            <td>
+                                        <c:forEach items="${requestScope.repay}" var="r">
+                                            <c:if test="${r.status==2}">
+                                                <tr>
+                                                    <td class="center">
+                                                        <label class="position-relative">
+                                                            <input type="checkbox" class="ace"/>
+                                                            <span class="lbl"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>${r.user.realname}</td>
+                                                    <td>${r.project.projectname}</td>
+                                                    <td><span class="label label-sm label-warning">${r.user.tel}</span>
+                                                    </td>
+                                                    <td>￥${r.project.money}</td>
+                                                    <td>${r.project.loan}月</td>
+                                                    <td><span
+                                                            class="label label-sm label-warning">${r.project.loantype}</span>
+                                                    </td>
+                                                    <td>${r.project.loanuse}</td>
+                                                    <td><fmt:formatDate value="${r.project.loantime}"
+                                                                        pattern="yyyy年MM月dd日"/></td>
+                                                    <td>￥${r.money}</td>
+                                                    <td>
 															<span class="label label-sm label-success">
 																<i class="ace-icon fa fa-heart bigger-120">已还款</i>
 															</span>
-                                            </td>
+                                                    </td>
 
-                                        </tr>
+                                                </tr>
+                                            </c:if>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
 

@@ -1,6 +1,8 @@
 package club.agtop.p2p.dao;
 
+import club.agtop.p2p.dto.RepayDTO;
 import club.agtop.p2p.entity.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -58,4 +60,9 @@ public interface UserDao{
 	 * @return
 	 */
     int updateNonEmptyUserById(User enti);
+
+    /**
+     * 查询项目相关的投资人
+     */
+    List<RepayDTO> selectRepay(@Param("id") Integer id);
 }

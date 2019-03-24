@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
     @Autowired
     private AdminService adminService;
@@ -31,13 +30,13 @@ public class AdminController {
         return "admin/index";
     }
 
-    @RequestMapping("/logout")
+    @RequestMapping("/admin/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/admin_login.jsp";
     }
 
-    @RequestMapping("/addAdmin")
+    @RequestMapping("/admin/addAdmin")
     public String addAdmin(Admin admin, MultipartFile headPic, HttpServletRequest request) {
         System.out.println(adminService);
         try {
@@ -57,21 +56,21 @@ public class AdminController {
         return "redirect:/admin/employeeList";
     }
 
-    @RequestMapping("/employeeList")
+    @RequestMapping("/admin/employeeList")
     public String employeeList(HttpServletRequest request) {
         List<Admin> admins = adminService.selectAdmin();
         request.setAttribute("admins", admins);
         return "admin/employee";
     }
 
-    @RequestMapping("/getById")
+    @RequestMapping("/admin/getById")
     @ResponseBody
     public Object getById(Integer id) {
         Admin admin = adminService.selectAdminById(id);
         return admin;
     }
 
-    @RequestMapping("/editEmployee")
+    @RequestMapping("/admin/editEmployee")
     public String editEmployee(Admin admin, MultipartFile headPic, HttpServletRequest request) {
         if (headPic.getOriginalFilename() != null && !headPic.getOriginalFilename().equals("")) {
             try {
@@ -92,13 +91,13 @@ public class AdminController {
         return "redirect:/admin/employeeList";
     }
 
-    @RequestMapping("/removeAdmin")
+    @RequestMapping("/admin/removeAdmin")
     public String removeAdmin(Integer id) {
         adminService.deleteAdminById(id);
         return "redirect:/admin/employeeList";
     }
 
-    @RequestMapping("/showMe")
+    @RequestMapping("/admin/showMe")
     public String showMe(Integer id, HttpServletRequest request) {
         Admin admin = adminService.selectAdminById(id);
         request.setAttribute("admin", admin);

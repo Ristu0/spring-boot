@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -62,18 +64,22 @@
                                         </thead>
 
                                         <tbody>
-                                        <tr>
-
-                                            <td>wudang</td>
-                                            <td>13512345678</td>
-                                            <td>河南郑州</td>
-                                            <td>￥1000000</td>
-                                            <td>12月</td>
-                                            <td><span class="label label-sm label-warning">信用</span></td>
-                                            <td>贷款买车</td>
-                                            <td>2018-07-01 13:32:21</td>
-
-                                        </tr>
+                                        <c:forEach varStatus="vs" items="${requestScope.loans}" var="l">
+                                            <c:if test="${l.status==3}">
+                                                <tr>
+                                                    <td>${l.realname}</td>
+                                                    <td>${l.tel}</td>
+                                                    <td>${l.region}</td>
+                                                    <td>￥${l.money}</td>
+                                                    <td>${l.loantime}月</td>
+                                                    <td><span class="label label-sm label-warning">${l.loantype}</span>
+                                                    </td>
+                                                    <td>${l.loanuser}</td>
+                                                    <td><fmt:formatDate value="${l.loandate}"
+                                                                        pattern="yyyy年MM月dd日"/></td>
+                                                </tr>
+                                            </c:if>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
 

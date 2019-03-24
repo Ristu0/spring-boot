@@ -1,5 +1,7 @@
 package club.agtop.p2p.entity;
 
+import java.util.Date;
+
 public class Loan {
     private Integer id;
     private String realname;
@@ -10,13 +12,12 @@ public class Loan {
     private String loantype;
     private String loanuser;
     private Integer status;
+    private Date loandate;
 
     public Loan() {
-        super();
     }
 
-    public Loan(Integer id, String realname, String tel, String region, Double money, Integer loantime, String loantype, String loanuser, Integer status) {
-        super();
+    public Loan(Integer id, String realname, String tel, String region, Double money, Integer loantime, String loantype, String loanuser, Integer status, Date loandate) {
         this.id = id;
         this.realname = realname;
         this.tel = tel;
@@ -26,10 +27,11 @@ public class Loan {
         this.loantype = loantype;
         this.loanuser = loanuser;
         this.status = status;
+        this.loandate = loandate;
     }
 
     public Integer getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Integer id) {
@@ -37,7 +39,7 @@ public class Loan {
     }
 
     public String getRealname() {
-        return this.realname;
+        return realname;
     }
 
     public void setRealname(String realname) {
@@ -45,7 +47,7 @@ public class Loan {
     }
 
     public String getTel() {
-        return this.tel;
+        return tel;
     }
 
     public void setTel(String tel) {
@@ -53,7 +55,7 @@ public class Loan {
     }
 
     public String getRegion() {
-        return this.region;
+        return region;
     }
 
     public void setRegion(String region) {
@@ -61,7 +63,7 @@ public class Loan {
     }
 
     public Double getMoney() {
-        return this.money;
+        return money;
     }
 
     public void setMoney(Double money) {
@@ -69,7 +71,7 @@ public class Loan {
     }
 
     public Integer getLoantime() {
-        return this.loantime;
+        return loantime;
     }
 
     public void setLoantime(Integer loantime) {
@@ -77,7 +79,7 @@ public class Loan {
     }
 
     public String getLoantype() {
-        return this.loantype;
+        return loantype;
     }
 
     public void setLoantype(String loantype) {
@@ -85,7 +87,7 @@ public class Loan {
     }
 
     public String getLoanuser() {
-        return this.loanuser;
+        return loanuser;
     }
 
     public void setLoanuser(String loanuser) {
@@ -93,11 +95,34 @@ public class Loan {
     }
 
     public Integer getStatus() {
-        return this.status;
+        return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
     }
 
+    public Date getLoandate() {
+        return loandate;
+    }
+
+    public void setLoandate(Date loandate) {
+        this.loandate = loandate;
+    }
+
+    @Override
+    public String toString() {
+        return "Loan{" +
+                "id=" + id +
+                ", realname='" + realname + '\'' +
+                ", tel='" + tel + '\'' +
+                ", region='" + region + '\'' +
+                ", money=" + money +
+                ", loantime=" + loantime +
+                ", loantype='" + loantype + '\'' +
+                ", loanuser='" + loanuser + '\'' +
+                ", status=" + status +
+                ", loandate=" + loandate +
+                '}';
+    }
 }

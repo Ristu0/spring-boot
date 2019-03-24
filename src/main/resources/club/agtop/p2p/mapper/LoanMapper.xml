@@ -12,6 +12,7 @@
         <result column="loantype" property="loantype"/>
         <result column="loanuser" property="loanuser"/>
         <result column="status" property="status"/>
+        <result column="loandate" property="loandate"/>
     </resultMap>
 
     <!-- 数据库中表名为:p_loan的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
@@ -25,6 +26,7 @@
         ,p_loan.loantype as loantype
         ,p_loan.loanuser as loanuser
         ,p_loan.status as status
+        ,p_loan.loandate as loandate
     </sql>
 
     <!--获得类名为:Loan对应的数据库表的数据总行数 -->

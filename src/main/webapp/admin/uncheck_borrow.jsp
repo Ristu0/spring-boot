@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
@@ -71,30 +73,38 @@
                                         </thead>
 
                                         <tbody>
-                                        <tr>
-                                            <td class="center">
-                                                <label class="position-relative">
-                                                    <input type="checkbox" class="ace"/>
-                                                    <span class="lbl"></span>
-                                                </label>
-                                            </td>
-                                            <td>wudang</td>
-                                            <td>13512345678</td>
-                                            <td>河南郑州</td>
-                                            <td>￥1000000</td>
-                                            <td>12月</td>
-                                            <td><span class="label label-sm label-warning">信用</span></td>
-                                            <td>贷款买车</td>
-                                            <td>2018-07-01 13:32:21</td>
-                                            <td>
-                                                <div class="hidden-sm hidden-xs btn-group">
-                                                    <span class="label label-inverse arrowed">撤回</span>
+                                        <c:forEach varStatus="vs" items="${requestScope.loans}" var="l">
+                                            <c:if test="${l.status==1}">
+                                                <tr>
+                                                    <td class="center">
+                                                        <label class="position-relative">
+                                                            <input type="checkbox" class="ace"/>
+                                                            <span class="lbl"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>${l.realname}</td>
+                                                    <td>${l.tel}</td>
+                                                    <td>${l.region}</td>
+                                                    <td>￥${l.money}</td>
+                                                    <td>${l.loantime}月</td>
+                                                    <td><span class="label label-sm label-warning">${l.loantype}</span>
+                                                    </td>
+                                                    <td>${l.loanuser}</td>
+                                                    <td><fmt:formatDate value="${l.loandate}"
+                                                                        pattern="yyyy年MM月dd日"/></td>
+                                                    <td>
+                                                        <div class="hidden-sm hidden-xs btn-group">
+                                                            <a href="${pageContext.request.contextPath}/admin/unpassLoan?id=${l.id}"><span
+                                                                    class="label label-inverse arrowed">撤回</span></a>
 
-                                                    <span class="label label-success arrowed-in arrowed-in-right">审核通过</span>
+                                                            <a href="${pageContext.request.contextPath}/admin/passLoan?id=${l.id}"><span
+                                                                    class="label label-success arrowed-in arrowed-in-right">审核通过</span></a>
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </c:if>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
 
